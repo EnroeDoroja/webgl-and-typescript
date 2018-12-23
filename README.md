@@ -1,6 +1,6 @@
 # WebGL and TypeScript
 
-This project is a simple demo of how to use WebGL2 and TypeScript together.
+This project is a simple demo of how to use WebGL2 and TypeScript together. It demostrates the setup of a simple shader-based renderer, texture creation, and basic mouse integration.
 
 In an effort to make this code more resilient to bit-rot, the version of TypeScript has been fixed at 3.2.2, and webpack has been fixed at 4.28.1.
 
@@ -28,7 +28,7 @@ It also relies heavily on [TWGL](http://twgljs.org/) (A Tiny WebGL helper Librar
 
 The code is still a bit messy, so that is likely to evolve over time.
 
-My intention is to add a few features that will be useful to most projects, including basic mouse integration (e.g. orbit, zoom, and picking).
+My intention is to add a few features that will be useful to most projects, including more advanced mouse integration (e.g. object picking).
 
 I would also like to experiment with React integration, with a view towards using this as a starting point for WebGL-based visualisation tools.
 

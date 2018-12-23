@@ -23,7 +23,46 @@ window.onload = () => {
     return;
   }
 
-  const resize = () => {
+  const mouseState = {
+    mouseDown: false
+  };
+
+  const objectState = {
+    rotation: 0
+  };
+
+  const cameraState = {
+    distance: 100
+  };
+
+  const onMouseDown = (event: MouseEvent) => {
+    if (event.button === 0) {
+      mouseState.mouseDown = true;
+    }
+  };
+
+  const onMouseUp = (event: MouseEvent) => {
+    if (event.button === 0) {
+      mouseState.mouseDown = false;
+    }
+  };
+
+  const onMouseMove = (event: MouseEvent) => {
+    if (mouseState.mouseDown) {
+      objectState.rotation += event.movementX * 0.004;
+    }
+  }
+
+  const onWheel = (event: WheelEvent) => {
+    cameraState.distance += event.deltaY;
+  };
+
+  canvas.addEventListener('mousedown', onMouseDown);
+  canvas.addEventListener('mouseup', onMouseUp);
+  canvas.addEventListener('mousemove', onMouseMove);
+  canvas.addEventListener('wheel', onWheel);
+
+  const onResize = () => {
     const desiredWidth = window.innerWidth;
     const desiredHeight = window.innerHeight;
     const devicePixelRatio = window.devicePixelRatio || 1;
@@ -33,9 +72,9 @@ window.onload = () => {
     canvas.height = desiredHeight * devicePixelRatio;
   };
 
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', onResize);
 
-  resize();
+  onResize();
 
   const plane = twgl.primitives.createPlaneBuffers(gl, 60, 60);
 
@@ -129,7 +168,7 @@ window.onload = () => {
     const projectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 1, 2000);
 
     // Compute the camera's matrix using look at
-    const cameraPosition = [0, 50, 100];
+    const cameraPosition = [0, cameraState.distance / 2, cameraState.distance / 1];
     const target = [0, 0, 0];
     const up = [0, 1, 0];
     const cameraMatrix = m4.lookAt(cameraPosition, target, up, uniformsThatAreTheSameForAllObjects.u_viewInverse);
@@ -147,7 +186,7 @@ window.onload = () => {
     twgl.setUniforms(uniformSetters, uniformsThatAreTheSameForAllObjects);
 
     objects.forEach(function(object) {
-      const worldMatrix = m4.rotateY(m4.identity(), object.yRotation);
+      const worldMatrix = m4.rotateY(m4.identity(), objectState.rotation);
       m4.multiply(viewProjectionMatrix, worldMatrix, uniformsThatAreComputedForEachObject.u_worldViewProjection);
       m4.transpose(m4.inverse(worldMatrix), uniformsThatAreComputedForEachObject.u_worldInverseTranspose);
 
