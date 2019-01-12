@@ -16,6 +16,8 @@ If everything is working correctly, you should see something like this:
 
 <img src="screenshot.png" width="553" height="469">
 
+Scrolling using your mousewheel or touchpad should zoom in and out. Holding down the left mouse button and moving the mouse left or right should rotate the plane around the Y axis (the axis around the normal of the plane).
+
 ## Resources
 
 This project as a whole is based on [WebGL-Typescript-Starter](https://github.com/NikitaIT/WebGL-Typescript-Starter). A lot of code was removed to make it easier to adapt to other projects. This includes code for testing, since testing frameworks and practices change so rapidly in the JavaScript ecosystem.
