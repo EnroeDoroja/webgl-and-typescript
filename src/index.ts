@@ -3,6 +3,9 @@ import * as twgl from "twgl.js";
 import {m4} from "twgl.js";
 import basic from "./shader/basic/basic";
 
+let start = Date.now();
+let frames = 0;
+
 const degToRad = (d: number) => {
   return d * Math.PI / 180;
 };
@@ -65,11 +68,8 @@ window.onload = () => {
   const onResize = () => {
     const desiredWidth = window.innerWidth;
     const desiredHeight = window.innerHeight;
-    const devicePixelRatio = window.devicePixelRatio || 1;
-    canvas.style.width = `${desiredWidth}px`;
-    canvas.style.height = `${desiredHeight}px`;
-    canvas.width = desiredWidth * devicePixelRatio;
-    canvas.height = desiredHeight * devicePixelRatio;
+    canvas.width = desiredWidth;
+    canvas.height = desiredHeight;
   };
 
   window.addEventListener('resize', onResize);
@@ -115,7 +115,7 @@ window.onload = () => {
   const ctx = document.createElement("canvas").getContext("2d");
 
   const makeTexture = function(gl: WebGLRenderingContext) {
-    var tex = gl.createTexture();
+    const tex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, tex);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, ctx.canvas);
     gl.generateMipmap(gl.TEXTURE_2D);
@@ -198,6 +198,14 @@ window.onload = () => {
 
       gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
     });
+
+    frames++;
+    let now = Date.now();
+    if (now - start > 1000) {
+      document.title = frames + ' fps';
+      frames = 0;
+      start = now;
+    }
 
     requestAnimationFrame(drawScene);
   }
